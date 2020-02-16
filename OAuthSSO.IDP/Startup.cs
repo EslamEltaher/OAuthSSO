@@ -31,6 +31,12 @@ namespace OAuthSSO.IDP
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddTestUsers(Config.GetUsers())
+                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryIdentityResources(Config.GetResources());
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -51,6 +57,8 @@ namespace OAuthSSO.IDP
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {
