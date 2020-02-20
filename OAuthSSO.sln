@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthSSO.IDP", "OAuthSSO.ID
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.Model", "ImageGallery.Model\ImageGallery.Model.csproj", "{16A5C7EE-59A1-43CC-BA20-E549A5596E63}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.Client", "ImageGallery.Client\ImageGallery.Client.csproj", "{C620267A-0BE2-4936-AD21-16389A7B02C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{16A5C7EE-59A1-43CC-BA20-E549A5596E63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16A5C7EE-59A1-43CC-BA20-E549A5596E63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16A5C7EE-59A1-43CC-BA20-E549A5596E63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C620267A-0BE2-4936-AD21-16389A7B02C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C620267A-0BE2-4936-AD21-16389A7B02C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C620267A-0BE2-4936-AD21-16389A7B02C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C620267A-0BE2-4936-AD21-16389A7B02C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
