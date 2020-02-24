@@ -8,6 +8,8 @@ using ImageGallery.Client.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Linq;
 
 namespace ImageGallery.Client
 {
@@ -57,6 +59,28 @@ namespace ImageGallery.Client
                     //instead of making the IDP return the User claims in the Id Token 
                     //we to make the client application hit the (UserInfo) Endpoint so we set:
                     options.GetClaimsFromUserInfoEndpoint = true;
+
+                    //34- Keeping Only claims that we need
+                    options.Events = new OpenIdConnectEvents()
+                    {
+                        OnTokenValidated = async tokenValidatedContext => {
+                            var claimsIdentity = tokenValidatedContext.Principal.Identity as ClaimsIdentity;
+                            var subjectClaim = claimsIdentity.Claims.FirstOrDefault(c => c.Type == "sub");
+
+                            //or 
+
+                            subjectClaim = tokenValidatedContext.Principal.Claims.FirstOrDefault(c => c.Type == "sub");
+
+
+                            var newClaimsIdentity = new ClaimsIdentity(tokenValidatedContext.Scheme.Name, "given_name", "role");
+                            newClaimsIdentity.AddClaim(subjectClaim);
+
+                            tokenValidatedContext.Principal = new ClaimsPrincipal(newClaimsIdentity);
+                        },
+                        OnUserInformationReceived = async userInformationReceivedContext => {
+                            await System.Threading.Tasks.Task.CompletedTask;
+                        }
+                    };
                 });
 
             services.AddAuthorization();
