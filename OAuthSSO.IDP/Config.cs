@@ -57,7 +57,12 @@ namespace OAuthSSO.IDP
                         IdentityServerConstants.StandardScopes.Profile
                     },
                     //to make the UserClaims available in IdToken we can set:
-                        //AlwaysIncludeUserClaimsInIdToken = true                    
+                        //AlwaysIncludeUserClaimsInIdToken = true           
+                        
+                    //Logging out
+                    PostLogoutRedirectUris = {
+                        "https://localhost:44357/signout-callback-oidc"
+                    }
                 }
             };
         }

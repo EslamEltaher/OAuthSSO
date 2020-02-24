@@ -10,6 +10,9 @@ using ImageGallery.Model;
 using System.Net.Http;
 using System.IO;
 using ImageGallery.Client.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace ImageGallery.Client.Controllers
 {
@@ -165,6 +168,16 @@ namespace ImageGallery.Client.Controllers
             }
 
             throw new Exception($"A problem happened while calling the API: {response.ReasonPhrase}");
-        }               
+        }
+
+        #region Auth-Related
+        public async Task Logout()
+        {
+            //to clear the cookies and logout at level of the client
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //to logout at level of the Idp (call the Idp to logout the user)
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        }
+        #endregion
     }
 }

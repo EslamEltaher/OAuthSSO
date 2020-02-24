@@ -47,10 +47,11 @@ namespace ImageGallery.Client
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.ResponseType = "code id_token";
-                    options.CallbackPath = "/signin-oidc";
+                    options.CallbackPath = "/signin-oidc"; //signin-oidc is the default value
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.SaveTokens = true;
                     options.ClientSecret = "abcdefghijklmnopqrstuvwxyz";
+                    //options.SignedOutCallbackPath = "/signout-callback-oidc"; //signout-callback-oidc is the default value
 
                     //instead of making the IDP return the User claims in the Id Token 
                     //we to make the client application hit the (UserInfo) Endpoint so we set:
