@@ -51,6 +51,10 @@ namespace ImageGallery.Client
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.SaveTokens = true;
                     options.ClientSecret = "abcdefghijklmnopqrstuvwxyz";
+
+                    //instead of making the IDP return the User claims in the Id Token 
+                    //we to make the client application hit the (UserInfo) Endpoint so we set:
+                    options.GetClaimsFromUserInfoEndpoint = true;   
                 });
 
             services.AddAuthorization();

@@ -55,7 +55,9 @@ namespace OAuthSSO.IDP
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile
-                    }
+                    },
+                    //to make the UserClaims available in IdToken we can set:
+                        //AlwaysIncludeUserClaimsInIdToken = true                    
                 }
             };
         }
