@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using ImageGallery.Client.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ImageGallery.Client
 {
@@ -55,7 +56,7 @@ namespace ImageGallery.Client
 
                     //instead of making the IDP return the User claims in the Id Token 
                     //we to make the client application hit the (UserInfo) Endpoint so we set:
-                    options.GetClaimsFromUserInfoEndpoint = true;   
+                    options.GetClaimsFromUserInfoEndpoint = true;
                 });
 
             services.AddAuthorization();
@@ -83,6 +84,10 @@ namespace ImageGallery.Client
                 var url = req.Request.Path.ToString();
                 await res();
             });
+
+            //33- to keep the originical claim Types mapping we clear the default mapper
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
             app.UseAuthentication();
             //app.UseAuthorization();
 
