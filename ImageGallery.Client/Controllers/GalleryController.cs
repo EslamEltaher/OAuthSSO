@@ -13,6 +13,8 @@ using ImageGallery.Client.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using IdentityModel.Client;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace ImageGallery.Client.Controllers
 {
@@ -173,6 +175,21 @@ namespace ImageGallery.Client.Controllers
             }
 
             throw new Exception($"A problem happened while calling the API: {response.ReasonPhrase}");
+        }
+
+        public async Task<IActionResult> OrderFrame()
+        {
+            var discoveryClient = new DiscoveryClient("https://localhost:44356/");
+            var metadata = await discoveryClient.GetAsync();
+
+            var userInfoClient = new UserInfoClient(metadata.UserInfoEndpoint);
+            var token = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken);
+
+            var userInfo = await userInfoClient.GetAsync(token);
+
+            var address = userInfo.Claims.FirstOrDefault(c => c.Type == "address")?.Value;
+
+            return View(new OrderFrameViewModel(address));
         }
 
         #region Auth-Related
