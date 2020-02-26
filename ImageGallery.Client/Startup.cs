@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Linq;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ImageGallery.Client
 {
@@ -41,7 +42,9 @@ namespace ImageGallery.Client
             services.AddScoped<IImageGalleryHttpClient, ImageGalleryHttpClient>();
 
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {})
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => {
+                    options.AccessDeniedPath = "/Authorization/AccessDenied";
+                })
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => {
                     //options.AuthenticationScheme = "oidc";
                     options.Authority = "https://localhost:44356/";
@@ -50,6 +53,7 @@ namespace ImageGallery.Client
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("address");
+                    options.Scope.Add("roles");
                     options.ResponseType = "code id_token";
                     options.CallbackPath = "/signin-oidc"; //signin-oidc is the default value
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -83,8 +87,10 @@ namespace ImageGallery.Client
                             await System.Threading.Tasks.Task.CompletedTask;
                         }
                     };
-                });
 
+                    //options.ClaimActions. Add()ClaimActions.MapUniqueJsonKey("sub", "sub")
+                    options.ClaimActions.MapUniqueJsonKey("role", "role");
+                });
             services.AddAuthorization();
         }
 
