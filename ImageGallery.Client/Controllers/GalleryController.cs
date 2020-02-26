@@ -31,6 +31,11 @@ namespace ImageGallery.Client.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if(HttpContext.User == User)
+            {
+                var claims = User.Claims.Select(c => c.Type + ":::" + c.Value).ToList();
+                var claimsString = string.Join(',', claims);
+            }
             // call the API
             var httpClient = await _imageGalleryHttpClient.GetClient(); 
 

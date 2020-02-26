@@ -24,6 +24,7 @@ namespace OAuthSSO.IDP
                     {
                         new Claim("given_name", "Frank"),
                         new Claim("family_name", "Underwood"),
+                        new Claim("address", "1, Main Street")
                     }
                 },
                 new TestUser
@@ -36,6 +37,7 @@ namespace OAuthSSO.IDP
                     {
                         new Claim("given_name", "Claire"),
                         new Claim("family_name", "Underwood"),
+                        new Claim("address", "2, Big Street")
                     }
                 }
             };
@@ -54,7 +56,8 @@ namespace OAuthSSO.IDP
                     },
                     AllowedScopes = {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Address
                     },
                     //to make the UserClaims available in IdToken we can set:
                         //AlwaysIncludeUserClaimsInIdToken = true           
@@ -72,6 +75,7 @@ namespace OAuthSSO.IDP
             return new List<IdentityResource>() {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Address()
             };
         }
     }

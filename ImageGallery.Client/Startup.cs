@@ -49,6 +49,7 @@ namespace ImageGallery.Client
                     options.ClientId = "imagegalleryclient";
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
+                    options.Scope.Add("address");
                     options.ResponseType = "code id_token";
                     options.CallbackPath = "/signin-oidc"; //signin-oidc is the default value
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -78,6 +79,7 @@ namespace ImageGallery.Client
                             tokenValidatedContext.Principal = new ClaimsPrincipal(newClaimsIdentity);
                         },
                         OnUserInformationReceived = async userInformationReceivedContext => {
+                            userInformationReceivedContext.User.Remove("address");
                             await System.Threading.Tasks.Task.CompletedTask;
                         }
                     };
