@@ -1,0 +1,111 @@
+Important to read !!
+====================
+this happened in address and role claims in this project
+https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/
+
+rewatch
+=======
+27 - Inspecting an Identity Token
+33 - keeping the original claim types (Clear JwtSecurityTokenHelper.DefaultInboundClaimTypeMapping)
+34 - Only Keeping Claims that we will need
+36 - Getting Ready for calling the UserInfo Endpoint
+37 - Manually Calling /UserInfo Endpoint       (Nuget IdentityModel)
+
+
+Notes
+=====
+26 - Calling the UserInfo Endpoint to Get Additional Claims
+===========================================================
+because identity token is sent via URL we keep it as small as possible 
+claims like given_name and family_name are no included in the "Id Token"
+are not included by default
+
+if we want to include them (Not preferred) 
+we set AlwaysIncludeUserClaimsInIdToken = true, 
+<< in the Idp Level for each client >>
+
+instead to make sure the client hits /UserInfo endpoint (preferred)
+we set options.GetClaimsFromUserInfoEndpoint = true;
+<< in the client application >>
+
+
+28-29-30 Logging out
+====================
+to logout from our client application we need to
+- delete the cookies for the user and the cliams (at level of the client)
+	await HttpContext.SignOutAsync("Cookies");
+-logout at the level of Idp
+	await HttpContext.SignOutAsync("OpenIdConnect");
+
+
+to configure the openIdConnect signout redirect Url in the client we set
+	options.SignedOutCallbackPath = "/signout-callback-oidc"; (Default = /signout-callback-oidc)
+
+to configure the signout redirect uri in the Idp we configure:
+	clientObject.PostLogoutRedirectUris = { "/signout-callback-oidc" }
+
+
+
+===========================================
+Working with Claims 
+===========================================
+33 Keeping Originial Claims
+===========================
+To keep the originical claim Types mapping we clear the default mapper:
+
+	JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+34 Only Keeping Claims that we will need
+========================================
+to keep the authentication cookie as small as possible
+
+in Client App UseOpenIdConnect we can listen to Events (On Token Validated)
+
+options.Events = new OpenIdConnectEvents() {
+	OnTokenValidated = async tokenValidatedContext => {
+		subjectClaim = tokenValidatedContext.Principal.Claims.FirstOrDefault(c => c.Type == "sub");
+		var newClaimsIdentity = new ClaimsIdentity(tokenValidatedContext.Scheme.Name, "given_name", "role");
+		newClaimsIdentity.AddClaim(subjectClaim);
+		tokenValidatedContext.Principal = new ClaimsPrincipal(newClaimsIdentity);
+	},	
+	OnUserInformationReceived = async userInformationReceivedContext => {
+		await System.Threading.Tasks.Task.CompletedTask;
+	}
+};
+
+
+35-37 Getting Additional Information from /UserInfo Endpoint
+=========================================================
+we need to add new IdentityResource like address 
+but we don't need to keep it in the authentication cookie
+ -we keep the cookie small, and not include sensentive data.
+ -to get the latest info about the user's address (from /UserInfo)
+
+1- we added address in IdentityResources & scopes in our client
+2- we added address in scopes of Client Application
+3- we delete the address from the User in Authentication Claims
+	we remove it from User object in OnUserInformationReceieved Event
+4- we call the /UserInfo Endpoint when we need to get the address
+(vid 37)
+
+
+37- Manually Calling /UserInfo to get additional data
+=====================================================
+we add Nuget package: IdentityModel
+
+ var discoveryClient = new DiscoveryClient("https://localhost:44356/");
+var metadata = await discoveryClient.GetAsync();
+
+var userInfoClient = new UserInfoClient(metadata.UserInfoEndpoint);
+var token = await HttpContext.GetTokenAsync(OpenIdConnectDefaults.AuthenticationScheme, OpenIdConnectParameterNames.AccessToken);
+var userInfo = await userInfoClient.GetAsync(token);
+
+var address = userInfo.Claims.FirstOrDefault(c => c.Type == "address")?.Value;
+
+
+
+
+38- Role Based Authorization
+============================
+RBAC: role-based access control
+ABAC: attribute-based access control (preferred)

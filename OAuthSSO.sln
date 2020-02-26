@@ -11,6 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.Client", "Imag
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.API", "ImageGallery.API\ImageGallery.API.csproj", "{268424D7-15D8-45AC-ACC4-47B768089C06}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{633A3F47-1835-43F7-AD0D-213614CC928E}"
+	ProjectSection(SolutionItems) = preProject
+		Securing AspNetCore apps.txt = Securing AspNetCore apps.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6C7167A7-69C9-4067-8115-5C48E542A191}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +43,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E1D4F008-7A29-466C-968D-FE82F005F063} = {6C7167A7-69C9-4067-8115-5C48E542A191}
+		{16A5C7EE-59A1-43CC-BA20-E549A5596E63} = {6C7167A7-69C9-4067-8115-5C48E542A191}
+		{C620267A-0BE2-4936-AD21-16389A7B02C5} = {6C7167A7-69C9-4067-8115-5C48E542A191}
+		{268424D7-15D8-45AC-ACC4-47B768089C06} = {6C7167A7-69C9-4067-8115-5C48E542A191}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4BD22DE-FC4B-4D38-89CB-60A53AE09E77}

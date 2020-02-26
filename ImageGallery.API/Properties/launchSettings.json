@@ -9,8 +9,7 @@
   },
   "profiles": {
     "newProfile1": {
-      "commandName": "IISExpress",
-      "launchBrowser": true
+      "commandName": "IISExpress"
     }
   }
 }
