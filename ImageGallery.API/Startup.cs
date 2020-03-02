@@ -39,6 +39,12 @@ namespace ImageGallery.API
 
             // register the repository
             services.AddScoped<IGalleryRepository, GalleryRepository>();
+
+            services.AddAuthentication().AddIdentityServerAuthentication(options => {
+                options.Authority = "https://localhost:44356/";
+                options.RequireHttpsMetadata = true;
+                options.ApiName = "imagegalleryapi";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

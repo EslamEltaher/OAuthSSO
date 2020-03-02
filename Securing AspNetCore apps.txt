@@ -3,6 +3,12 @@ Important to read !!
 this happened in address and role claims in this project
 https://leastprivilege.com/2017/11/15/missing-claims-in-the-asp-net-core-2-openid-connect-handler/
 
+Nuget Packages
+==============
+IdentityModel				-> for manually calling discovery endpoint & /UserInfo endpoint
+IdentityServer4.AccessTokenValidation	-> for validating access_token
+
+
 rewatch
 =======
 27 - Inspecting an Identity Token
@@ -126,7 +132,11 @@ in Idp:
 2- we add the ApiResource in the scopes of the client
 	options.Scope.Add("imagegalleryapi");
 
-3- 
+3- we add token validation in the API
+	- we get (Nuget IdentityServer4.AccessTokenValidation)
+	- then
+
+
 
 	
 
