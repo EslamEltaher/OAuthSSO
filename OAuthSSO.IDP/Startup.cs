@@ -35,7 +35,8 @@ namespace OAuthSSO.IDP
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(Config.GetUsers())
                 .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryIdentityResources(Config.GetResources());
+                .AddInMemoryIdentityResources(Config.GetResources())
+                .AddInMemoryApiResources(Config.GetApiResources());
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

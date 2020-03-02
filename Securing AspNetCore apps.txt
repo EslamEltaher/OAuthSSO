@@ -11,6 +11,9 @@ rewatch
 36 - Getting Ready for calling the UserInfo Endpoint
 37 - Manually Calling /UserInfo Endpoint       (Nuget IdentityModel)
 
+44 - 50 Understanding OAuth2 and OpenIdConnect Section (11 minutes)
+53 - Validating Access Token 			(Nuget IdentityServer4.AccessTokenValidation)
+
 
 Notes
 =====
@@ -109,3 +112,22 @@ var address = userInfo.Claims.FirstOrDefault(c => c.Type == "address")?.Value;
 ============================
 RBAC: role-based access control
 ABAC: attribute-based access control (preferred)
+
+
+53 Securing API
+===============
+1- we add the API as an ApiResource
+
+in Idp:
+	.AddInMemoryApiResources(new List<ApiResource>() {
+ 		new ApiResource("imagegalleryapi", "Image Gallery API")
+	});
+
+2- we add the ApiResource in the scopes of the client
+	options.Scope.Add("imagegalleryapi");
+
+3- 
+
+	
+
+

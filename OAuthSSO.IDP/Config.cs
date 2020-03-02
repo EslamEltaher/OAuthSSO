@@ -60,8 +60,8 @@ namespace OAuthSSO.IDP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
-                        "roles"
-
+                        "roles",
+                        "imagegalleryapi"
                     },
                     //to make the UserClaims available in IdToken we can set:
                         //AlwaysIncludeUserClaimsInIdToken = true           
@@ -81,6 +81,13 @@ namespace OAuthSSO.IDP
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
                 new IdentityResource("roles", "Your role(s)", new List<string> {"role"})
+            };
+        }
+
+        internal static IEnumerable<ApiResource> GetApiResources()
+        {
+            return new List<ApiResource>() {
+                new ApiResource("imagegalleryapi", "Image Gallery API")
             };
         }
     }

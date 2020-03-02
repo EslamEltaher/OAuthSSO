@@ -50,10 +50,13 @@ namespace ImageGallery.Client
                     options.Authority = "https://localhost:44356/";
                     options.RequireHttpsMetadata = true;
                     options.ClientId = "imagegalleryclient";
+
                     options.Scope.Add("openid");
                     options.Scope.Add("profile");
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
+                    options.Scope.Add("imagegalleryapi");
+                    
                     options.ResponseType = "code id_token";
                     options.CallbackPath = "/signin-oidc"; //signin-oidc is the default value
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
