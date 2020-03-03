@@ -15,10 +15,11 @@ rewatch
 33 - keeping the original claim types (Clear JwtSecurityTokenHelper.DefaultInboundClaimTypeMapping)
 34 - Only Keeping Claims that we will need
 36 - Getting Ready for calling the UserInfo Endpoint
-37 - Manually Calling /UserInfo Endpoint       (Nuget IdentityModel)
+37 - Manually Calling /UserInfo Endpoint       					(Nuget IdentityModel)
 
 44 - 50 Understanding OAuth2 and OpenIdConnect Section (11 minutes)
-53 - Validating Access Token 			(Nuget IdentityServer4.AccessTokenValidation)
+53 - Validating Access Token 							(Nuget IdentityServer4.AccessTokenValidation)
+60/61 - Ensuring that (Role) claim is included in the access_token
 
 
 Notes
@@ -134,8 +135,14 @@ in Idp:
 
 3- we add token validation in the API
 	- we get (Nuget IdentityServer4.AccessTokenValidation)
-	- then
-
+	- then we add the code (in API):
+            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(OpenIdConnectDefaults.AuthenticationScheme ,options => {
+                    options.Authority = "https://localhost:44356/";
+                    options.RequireHttpsMetadata = true;
+                    options.ApiName = "imagegalleryapi";
+                });
+	
 
 
 	

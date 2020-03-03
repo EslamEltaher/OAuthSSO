@@ -29,8 +29,10 @@ namespace ImageGallery.API.Controllers
         [Authorize]
         public IActionResult GetImages()
         {
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
             // get from repo
-            var imagesFromRepo = _galleryRepository.GetImages();
+            var imagesFromRepo = _galleryRepository.GetImages(ownerId);
 
             // map to model
             var imagesToReturn = Mapper.Map<IEnumerable<Model.Image>>(imagesFromRepo);
@@ -42,6 +44,13 @@ namespace ImageGallery.API.Controllers
         [HttpGet("{id}", Name = "GetImage")]
         public IActionResult GetImage(Guid id)
         {
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            if (!_galleryRepository.IsImageOwner(id , ownerId))
+            {
+                return Forbid();
+            }
+
             var imageFromRepo = _galleryRepository.GetImage(id);
 
             if (imageFromRepo == null)
@@ -108,6 +117,13 @@ namespace ImageGallery.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteImage(Guid id)
         {
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            if (!_galleryRepository.IsImageOwner(id, ownerId))
+            {
+                return Forbid();
+            }
+
             var imageFromRepo = _galleryRepository.GetImage(id);
 
             if (imageFromRepo == null)
@@ -128,7 +144,14 @@ namespace ImageGallery.API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateImage(Guid id, 
             [FromBody] ImageForUpdate imageForUpdate)
-        {           
+        {
+            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+
+            if (!_galleryRepository.IsImageOwner(id, ownerId))
+            {
+                return Forbid();
+            }
+
             if (imageForUpdate == null)
             {
                 return BadRequest();
