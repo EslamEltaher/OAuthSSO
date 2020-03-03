@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -17,13 +19,19 @@ namespace ImageGallery.Client.Services
         }
         
         public async Task<HttpClient> GetClient()
-        {      
+        {
+            var access_token = await _httpContextAccessor.HttpContext
+                .GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+
+            if(!string.IsNullOrEmpty(access_token))
+            {
+                _httpClient.SetBearerToken(access_token);
+            }
+
             _httpClient.BaseAddress = new Uri("https://localhost:44346/");
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-
-            await Task.CompletedTask;
 
             return _httpClient;
         }        

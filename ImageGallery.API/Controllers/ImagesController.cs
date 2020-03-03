@@ -26,6 +26,7 @@ namespace ImageGallery.API.Controllers
         }
 
         [HttpGet()]
+        [Authorize]
         public IActionResult GetImages()
         {
             // get from repo

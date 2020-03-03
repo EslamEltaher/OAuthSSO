@@ -1,5 +1,6 @@
 ﻿using ImageGallery.API.Entities;
 using ImageGallery.API.Services;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -40,11 +41,12 @@ namespace ImageGallery.API
             // register the repository
             services.AddScoped<IGalleryRepository, GalleryRepository>();
 
-            services.AddAuthentication().AddIdentityServerAuthentication(options => {
-                options.Authority = "https://localhost:44356/";
-                options.RequireHttpsMetadata = true;
-                options.ApiName = "imagegalleryapi";
-            });
+            services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(OpenIdConnectDefaults.AuthenticationScheme ,options => {
+                    options.Authority = "https://localhost:44356/";
+                    options.RequireHttpsMetadata = true;
+                    options.ApiName = "imagegalleryapi";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,7 +101,8 @@ namespace ImageGallery.API
 
             // seed the DB with data
             galleryContext.EnsureSeedDataForContext();
-			
+
+            app.UseAuthentication();
             app.UseMvc(); 
         }
     }
