@@ -145,6 +145,10 @@ in Idp:
 	
 
 
-	
 
+61 Including role claim in access_token when calling API
+===================================================
+when adding ApiResource in Idp we can add a List<string> with the required claims
+
+new ApiResource("imagegalleryapi", "Image Gallery API", new List<string>() { "role" })
 
