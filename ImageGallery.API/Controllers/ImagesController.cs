@@ -42,15 +42,9 @@ namespace ImageGallery.API.Controllers
         }
 
         [HttpGet("{id}", Name = "GetImage")]
+        [Authorize(Policy = "MustOwnImage")]
         public IActionResult GetImage(Guid id)
         {
-            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-
-            if (!_galleryRepository.IsImageOwner(id , ownerId))
-            {
-                return Forbid();
-            }
-
             var imageFromRepo = _galleryRepository.GetImage(id);
 
             if (imageFromRepo == null)

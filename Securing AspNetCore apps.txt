@@ -21,7 +21,10 @@ rewatch
 53 - Validating Access Token 							(Nuget IdentityServer4.AccessTokenValidation)
 60/61 - Ensuring that (Role) claim is included in the access_token
 64-70 - [ACAB] Attribute Based Access Control
-67 - Using a simple Authorization Policy (SubscriptionLevel & Country)
+	67 - Using a simple Authorization Policy (SubscriptionLevel & Country)
+	68 - Extending Authorization Policies with Requirements and Handlers
+	69 - Handling Requirement
+
 
 
 Notes
@@ -181,3 +184,20 @@ in layout
 	<li><a asp-area="" asp-controller="Gallery" asp-action="OrderFrame">Order a Framed Image</a></li>
 }
 
+
+68 - 69 Creating Policies with Custom Requirements
+==================================================
+- we create MyCustomRequirement 	: IAuthorizationRequirement
+- we create MyCustomRequirementHandler 	: AuthorizationHandler<MyCustomRequirement>
+
+
+	to access routeData from MVC !!
+	=================================
+	protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MustOwnImageRequirement requirement) {
+	            var filterContext = context.Resource as AuthorizationFilterContext;
+	            var imageId = filterContext.RouteData.Values["id"].ToString();
+	}
+
+	Injecting the handler
+	=====================
+	services.AddSingleton<IAuthorizationHandler, MustOwnImageHandler>();

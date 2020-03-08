@@ -1,6 +1,8 @@
-﻿using ImageGallery.API.Entities;
+﻿using ImageGallery.API.Authorization;
+using ImageGallery.API.Entities;
 using ImageGallery.API.Services;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -47,6 +49,16 @@ namespace ImageGallery.API
                     options.RequireHttpsMetadata = true;
                     options.ApiName = "imagegalleryapi";
                 });
+
+            services.AddAuthorization(options => {
+                options.AddPolicy("MustOwnImage", policyBuilder => {
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.AddRequirements(new MustOwnImageRequirement());
+                });
+            });
+
+
+            services.AddSingleton<IAuthorizationHandler, MustOwnImageHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
