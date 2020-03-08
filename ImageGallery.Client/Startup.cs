@@ -56,7 +56,9 @@ namespace ImageGallery.Client
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
                     options.Scope.Add("imagegalleryapi");
-                    
+                    options.Scope.Add("subscriptionlevel");
+                    options.Scope.Add("country");
+
                     options.ResponseType = "code id_token";
                     options.CallbackPath = "/signin-oidc"; //signin-oidc is the default value
                     options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -93,8 +95,16 @@ namespace ImageGallery.Client
 
                     //options.ClaimActions. Add()ClaimActions.MapUniqueJsonKey("sub", "sub")
                     options.ClaimActions.MapUniqueJsonKey("role", "role");
+                    options.ClaimActions.MapUniqueJsonKey("country", "country");
+                    options.ClaimActions.MapUniqueJsonKey("subscriptionlevel", "subscriptionlevel");
                 });
-            services.AddAuthorization();
+            services.AddAuthorization(options => {
+                options.AddPolicy("CanOrderFrame", policyBuilder => {
+                    policyBuilder.RequireAuthenticatedUser();
+                    policyBuilder.RequireClaim("subscriptionlevel", "PayingUser");
+                    policyBuilder.RequireClaim("country", "be");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

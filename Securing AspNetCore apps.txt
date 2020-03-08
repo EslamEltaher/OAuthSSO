@@ -20,6 +20,8 @@ rewatch
 44 - 50 Understanding OAuth2 and OpenIdConnect Section (11 minutes)
 53 - Validating Access Token 							(Nuget IdentityServer4.AccessTokenValidation)
 60/61 - Ensuring that (Role) claim is included in the access_token
+64-70 - [ACAB] Attribute Based Access Control
+67 - Using a simple Authorization Policy (SubscriptionLevel & Country)
 
 
 Notes
@@ -151,4 +153,31 @@ in Idp:
 when adding ApiResource in Idp we can add a List<string> with the required claims
 
 new ApiResource("imagegalleryapi", "Image Gallery API", new List<string>() { "role" })
+
+
+
+66 Creating a simple Authorization Policy (SubscriptionLevel & Country)
+=========================================
+we add simple policies that require claims as follows:
+
+services.AddAuthorization(options => {
+	options.AddPolicy("name", policyBuilder => { 
+		policyBuilder.RequireAuthenticatedUser();
+		policyBuilder.RequireClaim("subscriptionlevel", "PayingUser");
+		policyBuilder.RequireClaim("claimName", "val1", "val2", "val3");
+	});
+});
+
+67 Using an Authorization Policy
+=================================
+in controller => [Authorize(Policy = "CanOrderFrame")]
+
+in layout
+=========
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@if ((await AuthorizationService.AuthorizeAsync(User, "CanOrderFrame")).Succeeded) {
+	<li><a asp-area="" asp-controller="Gallery" asp-action="OrderFrame">Order a Framed Image</a></li>
+}
 

@@ -25,7 +25,9 @@ namespace OAuthSSO.IDP
                         new Claim("given_name", "Frank"),
                         new Claim("family_name", "Underwood"),
                         new Claim("address", "1, Main Street"),
-                        new Claim("role", "FreeUser")
+                        new Claim("role", "FreeUser"),
+                        new Claim("subscriptionlevel", "FreeUser"),
+                        new Claim("country", "us")
                     }
                 },
                 new TestUser
@@ -39,7 +41,9 @@ namespace OAuthSSO.IDP
                         new Claim("given_name", "Claire"),
                         new Claim("family_name", "Underwood"),
                         new Claim("address", "2, Big Street"),
-                        new Claim("role", "PayingUser")
+                        new Claim("role", "PayingUser"),
+                        new Claim("subscriptionlevel", "PayingUser"),
+                        new Claim("country", "be")
                     }
                 }
             };
@@ -61,7 +65,9 @@ namespace OAuthSSO.IDP
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
                         "roles",
-                        "imagegalleryapi"
+                        "imagegalleryapi",
+                        "country",
+                        "subscriptionlevel"
                     },
                     //to make the UserClaims available in IdToken we can set:
                         //AlwaysIncludeUserClaimsInIdToken = true           
@@ -80,7 +86,9 @@ namespace OAuthSSO.IDP
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
-                new IdentityResource("roles", "Your role(s)", new List<string> {"role"})
+                new IdentityResource("roles", "Your role(s)", new List<string> {"role"}),
+                new IdentityResource("country", "The Country you're living in", new List<string>{ "country" }),
+                new IdentityResource("subscriptionlevel", "Your Subscription Level", new List<string>{ "subscriptionlevel" }),
             };
         }
 
