@@ -114,15 +114,9 @@ namespace ImageGallery.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "MustOwnImage")]
         public IActionResult DeleteImage(Guid id)
         {
-            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-
-            if (!_galleryRepository.IsImageOwner(id, ownerId))
-            {
-                return Forbid();
-            }
-
             var imageFromRepo = _galleryRepository.GetImage(id);
 
             if (imageFromRepo == null)
@@ -141,16 +135,10 @@ namespace ImageGallery.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "MustOwnImage")]
         public IActionResult UpdateImage(Guid id, 
             [FromBody] ImageForUpdate imageForUpdate)
         {
-            var ownerId = User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
-
-            if (!_galleryRepository.IsImageOwner(id, ownerId))
-            {
-                return Forbid();
-            }
-
             if (imageForUpdate == null)
             {
                 return BadRequest();
