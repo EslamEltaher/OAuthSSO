@@ -25,7 +25,9 @@ rewatch
 	68 - Extending Authorization Policies with Requirements and Handlers
 	69 - Handling Requirement
 72 - Token Lifetimes and Expiration
-
+74 - Gaining Long-lived Access with Refresh Tokens
+75 - Demo - Gaining Long-lived Access with Refresh Tokens !!
+ 
 
 Notes
 =====
@@ -229,3 +231,24 @@ client = new Client {
         IdentityTokenLifetime = 300,      //5 minutes (default)
         AccessTokenLifetime = 3600,       //1 hour (default)
 }
+
+
+74 - Gaining Long-lived Access with Refresh Tokens
+==================================================
+the client Authenticates itself 
+
+Header =  (ClientId, Client Secret encoded in Authroization Header)
+Body   =  	---------------------------------
+		| refresh token			|
+		| grant type = refresh token 	|
+		---------------------------------
+
+scope = "offline_access" must be allowed
+
+the Idp responds with a new access token (and optionaly new refresh_token)
+
+offline_access: offline means that user is not logged in to Idp anymore
+
+
+75 - Demo - Gaining Long-lived Access with Refresh Tokens
+=========================================================
