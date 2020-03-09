@@ -56,6 +56,11 @@ namespace OAuthSSO.IDP
                     ClientId = "imagegalleryclient",
                     ClientName = "Image Gallery",
                     ClientSecrets = { new Secret("abcdefghijklmnopqrstuvwxyz".Sha256()) },
+
+                    //AuthorizationCodeLifetime = 300,  //5 minutes (default)
+                    //IdentityTokenLifetime = 300,      //5 minutes (default)
+                    //AccessTokenLifetime = 3600,       //1 hour (default)
+
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = {
                         "https://localhost:44357/signin-oidc"

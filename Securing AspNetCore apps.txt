@@ -24,7 +24,7 @@ rewatch
 	67 - Using a simple Authorization Policy (SubscriptionLevel & Country)
 	68 - Extending Authorization Policies with Requirements and Handlers
 	69 - Handling Requirement
-
+72 - Token Lifetimes and Expiration
 
 
 Notes
@@ -201,3 +201,31 @@ in layout
 	Injecting the handler
 	=====================
 	services.AddSingleton<IAuthorizationHandler, MustOwnImageHandler>();
+
+
+
+72 - Token Lifetimes and Expiration
+===================================
+Identity Token: 
+	- very short lifetime (5 minutes default)
+	- used right after delivery
+	- applications implement their own expiration policies
+
+Access Token:
+	- Longer lifetime (1 hour default)
+	- Must be renewed to gain access to resources
+	- The IDP controls the expiry policy
+
+
+
+73 - Demo - Token Lifetimes and Expiration
+==========================================
+after access token expiry the API will allow access for 5 minutes (to allow for time difference in sync between servers)
+
+the lifetimes to configure for a client at IDP level
+
+client = new Client {
+	AuthorizationCodeLifetime = 300,  //5 minutes (default)
+        IdentityTokenLifetime = 300,      //5 minutes (default)
+        AccessTokenLifetime = 3600,       //1 hour (default)
+}
