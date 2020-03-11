@@ -61,6 +61,21 @@ namespace OAuthSSO.IDP
                     //IdentityTokenLifetime = 300,      //5 minutes (default)
                     //AccessTokenLifetime = 3600,       //1 hour (default)
 
+                    #region 75 - Gaining long-lived access with refresh tokens
+                    //AbsoluteRefreshTokenLifetime = default(30 Days),
+
+                    //Sliding Expiration: means every time a refresh token is requested 
+                    //its lifetime is renewed
+                    //RefreshTokenExpiration = TokenExpiration.Sliding,
+                    //SlidingRefreshTokenLifetime = 1296000 / 15 days
+
+                    //to allow updating claims after using refresh_token
+                    UpdateAccessTokenClaimsOnRefresh = true,
+
+                    //to allow using refresh tokens
+                    AllowOfflineAccess = true,
+	                #endregion
+
                     AllowedGrantTypes = GrantTypes.Hybrid,
                     RedirectUris = {
                         "https://localhost:44357/signin-oidc"

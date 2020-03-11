@@ -25,9 +25,10 @@ rewatch
 	68 - Extending Authorization Policies with Requirements and Handlers
 	69 - Handling Requirement
 72 - Token Lifetimes and Expiration
+73 @ 1:50 (the api allows 5 minutes access after access_token is expired)
 74 - Gaining Long-lived Access with Refresh Tokens
 75 - Demo - Gaining Long-lived Access with Refresh Tokens !!
- 
+
 
 Notes
 =====
@@ -222,7 +223,8 @@ Access Token:
 
 73 - Demo - Token Lifetimes and Expiration
 ==========================================
-after access token expiry the API will allow access for 5 minutes (to allow for time difference in sync between servers)
+after access token expiry the API will allow access for 5 minutes !!!
+	(to allow for time difference in sync between servers)
 
 the lifetimes to configure for a client at IDP level
 
@@ -252,3 +254,21 @@ offline_access: offline means that user is not logged in to Idp anymore
 
 75 - Demo - Gaining Long-lived Access with Refresh Tokens
 =========================================================
+- Refresh Token expiration:
+	refresh token lifetime is 30 days by default, then user has to sign in again
+	>>>>	AbsoluteRefreshTokenLifetime = default (30 days)
+
+- Sliding Expiration:
+	refresh tokens can have sliding expiration which means every time refresh token is requested its life time is renewed.
+	>>>>	RefreshTokenExpiration = TokenExpiration.Sliding
+	
+	and the sliding duration can be set but cannot exceed the absolute refresh token life time
+	>>>>	SlidingRefreshTokenLifetime = 1296000 (default 15 days)
+
+- Update Claims on refresh: 
+	to allow updating claims after using refresh_token
+	>>>>	UpdateAccessTokenClaimsOnRefresh = true
+
+
+- allowing offline_access: to allow using refresh tokens
+	>>>>	AllowOfflineAccess = true,
